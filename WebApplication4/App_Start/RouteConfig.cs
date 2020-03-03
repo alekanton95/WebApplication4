@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using WebApplication4.Models;
 
 namespace WebApplication4
 {
@@ -11,6 +12,11 @@ namespace WebApplication4
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
+            using (Modeldb db = new Modeldb())
+            {
+                db.Database.Initialize(false);
+                db.Configuration.LazyLoadingEnabled = true;
+            }
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(

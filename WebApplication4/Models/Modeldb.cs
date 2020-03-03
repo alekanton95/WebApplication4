@@ -8,7 +8,7 @@ namespace WebApplication4.Models
     public partial class Modeldb : DbContext
     {
         public Modeldb()
-            : base("name=Modeldb")
+            : base("Modeldb")
         {
         }
 
