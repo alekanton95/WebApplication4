@@ -12,17 +12,12 @@ namespace WebApplication4
     {
         public static void RegisterRoutes(RouteCollection routes)
         {
-            using (Modeldb db = new Modeldb())
-            {
-                db.Database.Initialize(false);
-                db.Configuration.LazyLoadingEnabled = true;
-            }
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
+                defaults: new { controller = "ContactLists", action = "Index", id = UrlParameter.Optional }
             );
         }
     }

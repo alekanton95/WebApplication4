@@ -15,24 +15,29 @@ namespace WebApplication4.Models
             ContactInfoes = new HashSet<ContactInfo>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Заполните фамилию")]
         [StringLength(100)]
+        [Display(Name ="Фамилия")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Заполните имя")]
         [StringLength(100)]
+        [Display(Name = "Имя")]
         public string FirstName { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Отчество")]
         public string MiddleName { get; set; }
 
         [StringLength(1000)]
+        [Display(Name = "Организация")]
         public string Organization { get; set; }
 
         [StringLength(1000)]
+        [Display(Name = "Должность")]
         public string Position { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

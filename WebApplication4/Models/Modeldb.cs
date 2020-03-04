@@ -5,12 +5,15 @@ namespace WebApplication4.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
+    
     public partial class Modeldb : DbContext
     {
         public Modeldb()
             : base("Modeldb")
         {
+            Database.CreateIfNotExists();
         }
+
 
         public virtual DbSet<ContactInfo> ContactInfoes { get; set; }
         public virtual DbSet<ContactList> ContactLists { get; set; }

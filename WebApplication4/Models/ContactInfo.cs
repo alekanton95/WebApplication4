@@ -9,19 +9,23 @@ namespace WebApplication4.Models
     [Table("ContactInfo")]
     public partial class ContactInfo
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [StringLength(100)]
+        [Display(Name = "Телефон")]
         public string Phone { get; set; }
 
         [StringLength(500)]
+        [Display(Name = "E-mail")]
         public string Email { get; set; }
 
         [StringLength(500)]
+        [Display(Name = "Skype")]
         public string Skype { get; set; }
 
         [StringLength(500)]
+        [Display(Name = "Другое")]
         public string Other { get; set; }
 
         public int? ContactListId { get; set; }

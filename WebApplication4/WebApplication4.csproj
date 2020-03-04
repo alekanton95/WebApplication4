@@ -138,6 +138,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ContactListsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -146,8 +147,6 @@
     <Compile Include="Models\ContactList.cs" />
     <Compile Include="Models\Modeldb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\EFGenericRepository.cs" />
-    <Compile Include="Repository\IGenericRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Database1.mdf" />
@@ -586,6 +585,11 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\ContactLists\Create.cshtml" />
+    <Content Include="Views\ContactLists\Delete.cshtml" />
+    <Content Include="Views\ContactLists\Details.cshtml" />
+    <Content Include="Views\ContactLists\Edit.cshtml" />
+    <Content Include="Views\ContactLists\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
