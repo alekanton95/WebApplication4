@@ -49,6 +49,52 @@
         <dd>
             @Html.DisplayFor(model => model.Position)
         </dd>
+        <dd>Контактная информация</dd>
+        <table class="table">
+            @foreach (var item in Model.ContactInfoes)
+            {
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Email)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Skype)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Organization)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(modelItem => item.Other)
+                    </th>
+                    <th></th>
+                </tr>
+                break;
+            }
+
+
+            @foreach (var item in Model.ContactInfoes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Skype)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Other)
+                    </td>
+
+                </tr>
+            }
+
+        </table>
 
     </dl>
 </div>
