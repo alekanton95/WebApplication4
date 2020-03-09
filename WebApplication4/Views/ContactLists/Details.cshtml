@@ -7,7 +7,7 @@
 <h2>Подробная информация</h2>
 
 <div>
-   
+
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -49,53 +49,51 @@
         <dd>
             @Html.DisplayFor(model => model.Position)
         </dd>
-        <dd>Контактная информация</dd>
-        <table class="table">
-            @foreach (var item in Model.ContactInfoes)
+        <dt>Контактная информация</dt>
+        @foreach (var item in Model.ContactInfoes)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Phone))
             {
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(modelItem => item.Phone)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(modelItem => item.Email)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(modelItem => item.Skype)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Organization)
-                    </th>
-                    <th>
-                        @Html.DisplayNameFor(modelItem => item.Other)
-                    </th>
-                    <th></th>
-                </tr>
-                break;
+                <dd>
+                    @Html.DisplayNameFor(x => item.Phone)
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </dd>
             }
 
-
-            @foreach (var item in Model.ContactInfoes)
+        }
+        @foreach (var item in Model.ContactInfoes)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Email))
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Phone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Email)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Skype)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Other)
-                    </td>
-
-                </tr>
+                <dd>
+                    @Html.DisplayNameFor(x => item.Email)
+                    @Html.DisplayFor(modelItem => item.Email)
+                </dd>
             }
 
-        </table>
+        }
+        @foreach (var item in Model.ContactInfoes)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Skype))
+            {
+                <dd>
+                    @Html.DisplayNameFor(x => item.Skype)
+                    @Html.DisplayFor(modelItem => item.Skype)
+                </dd>
+            }
 
+        }
+        @foreach (var item in Model.ContactInfoes)
+        {
+            if (!string.IsNullOrWhiteSpace(item.Other))
+            {
+                <dd>
+                    @Html.DisplayNameFor(x => item.Other)
+                    @Html.DisplayFor(modelItem => item.Other)
+                </dd>
+            }
+
+        }
     </dl>
 </div>
 <p>

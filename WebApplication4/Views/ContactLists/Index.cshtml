@@ -3,55 +3,53 @@
 @{
     ViewBag.Title = "Контакты";
 }
+<script>
+    $(document).ready(function () {
+        var j = jQuery.noConflict();
 
+        /*function setTableSort(elem) {
+            return j('table.table').DataTable({
+                "columnDefs": [{
+                    "targets": -1,
+                    "orderable": false
+                }]
+            });
+        }
+        var table = setTableSort();*/
+
+        j("#searchBtn").click(function (e) {
+            var search = jQuery("#searchTxt").val();
+
+            j.ajax({
+                type: "GET",
+                url: "/ContactLists/Search",
+                data: { "search": search },
+                success: function (msg) {
+                    //location.reload();
+                    //alert(msg);
+                    jQuery("#ListView").html(msg);
+                    //jQuery("#searchTxt").val() = search;
+                    /*j(".active .table").html(msg);
+                    table.destroy();*/
+                    //table = setTableSort();
+                }
+            });
+
+        });
+    });
+</script>
 <h2>Контакты</h2>
 
 <p>
     @Html.ActionLink("Добавить новый", "Create")
+    <div class="form-inline">
+        <div class="col-lg-4 col-lg-offset-4">
+            <input type="search" id="searchTxt" value="" class="form-control" placeholder="Поиск" />
+            <button id="searchBtn" value="Поиск" class="ui-button ui-widget ui-state-default ui - corner - all ui - button - text - only" type="submit">
+                <dd>Найти</dd><!--span class="glyphicon glyphicon-search"></span-->
+            </button>
+        </div>
+    </div>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.LastName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.MiddleName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Organization)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Position)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LastName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MiddleName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Organization)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Position)
-        </td>
-        <td>
-            @Html.ActionLink("Редактировать", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Подробнее", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Удалить", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+@Html.Partial("List", Model)

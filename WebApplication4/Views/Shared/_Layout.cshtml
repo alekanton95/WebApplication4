@@ -1,22 +1,32 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title – приложение ASP.NET</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+    <!--link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.structure.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.theme.css" rel="stylesheet" /-->
+
+    <link href="~/Content/themes/base/all.css" rel="stylesheet" />
+    @Styles.Render("~/Content/jquery-ui")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <link href="~/Content/jquery.jqGrid/ui.jqgrid.css" rel="stylesheet" />
+    @RenderSection("scripts", required: false)
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
 
-                @Html.ActionLink("Главная", "Index", "ContactLists", new { area = "" }, new { @class = "navbar-brand" })
-            <!--div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@*Html.ActionLink("Домашняя страница", "Index", "Home")</li>*@
-                </ul>
-            </div-->
+        @Html.ActionLink("Главная", "Index", "ContactLists", new { area = "" }, new { @class = "navbar-brand" })
+        <!--<div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                <li>Html.ActionLink("Домашняя страница", "Index", "Home")</li>
+            </ul>
+        </div>-->
     </div>
     <div class="container body-content">
         @RenderBody()
@@ -28,6 +38,6 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @*RenderSection("scripts", required: false)*@
 </body>
 </html>

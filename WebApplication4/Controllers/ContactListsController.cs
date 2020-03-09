@@ -7,7 +7,8 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication4.Models;
-
+using Newtonsoft.Json;
+using WebApplication4;
 
 namespace WebApplication4.Controllers
 {
@@ -54,6 +55,8 @@ namespace WebApplication4.Controllers
             {
                 db.ContactLists.Add(contactList);
                 db.SaveChanges();
+                SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList, db);
+                saveDataFromContactInfo.SaveData(Request.Params["JsonFile"].Replace("item.", ""));
                 return RedirectToAction("Index");
             }
 
@@ -72,6 +75,13 @@ namespace WebApplication4.Controllers
             {
                 return HttpNotFound();
             }
+            //ViewBag.ContactInfoes = contactList.ContactInfoes;
+            /*var json= new ContentResult
+            {
+                Content = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }),
+                ContentType = "application/json"
+            };*/
+            var json1 = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
             return View(contactList);
         }
 
@@ -79,13 +89,15 @@ namespace WebApplication4.Controllers
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,LastName,FirstName,MiddleName,Organization,Position")] ContactList contactList)
+        //[ValidateAntiForgeryToken]
+        public ActionResult Edit(/*[Bind(Include = "Id,LastName,FirstName,MiddleName,Organization,Position, ContactInfoes")]*/ ContactList contactList, /*[Bind(Include = "Id,ContactList,ContactListId,Phone,Email,Skype,Other ")]*/IEnumerable<ContactInfo> contactInfo)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(contactList).State = EntityState.Modified;
                 db.SaveChanges();
+                SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList,db);
+                saveDataFromContactInfo.SaveData(Request.Params["JsonFile"].Replace("item.",""));
                 return RedirectToAction("Index");
             }
             return View(contactList);
@@ -108,10 +120,15 @@ namespace WebApplication4.Controllers
 
         // POST: ContactLists/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+       // [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             ContactList contactList = db.ContactLists.Find(id);
+            var contactInfo = db.ContactInfoes.Where(c => c.ContactListId == id).ToList();
+            foreach (var item in contactInfo)
+            {
+                db.ContactInfoes.Remove(item);
+            }
             db.ContactLists.Remove(contactList);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -124,6 +141,37 @@ namespace WebApplication4.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+
+        public ActionResult Search(string search)
+        {
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                var list = db.ContactLists.Where(i => i.FirstName.Contains(search) || i.LastName.Contains(search) || i.MiddleName.Contains(search)
+                             || i.Organization.Contains(search) || i.Position.Contains(search)).ToList();
+                var contactinfo = db.ContactInfoes.Where(i => i.Phone.Contains(search) || i.Skype.Contains(search)
+                || i.Other.Contains(search) || i.Email.Contains(search)).Select(i => i.ContactList).ToList();
+                foreach (var item in contactinfo)
+                {
+                    list.Add(item);
+                }
+                return PartialView("List", list.Distinct());
+            }
+            else return PartialView("List", db.ContactLists.ToList());
+
+        }
+
+        [HttpPost]
+        public ActionResult ContactInfoCreateAndEdit(IEnumerable<ContactInfo> contactInfo)
+        {
+            if (ModelState.IsValid)
+            {
+                db.Entry(contactInfo).State = EntityState.Modified;
+                db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+            return View(contactInfo);
         }
     }
 }

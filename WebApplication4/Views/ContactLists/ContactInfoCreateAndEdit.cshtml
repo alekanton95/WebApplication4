@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WebApplication4.Models.ContactInfo>
+
+<script>
+    $(document).ready(function () {
+        var j = jQuery.noConflict();
+        j("#AddtableData").click(function (e) {
+            $('#ContactInfo').append("<tr><td hidden=\"hidden\"><input id=\"item_Id\" name=\"item.Id\" type=\"hidden\" value=\"0\"></td><td hidden=\"hidden\"><input id=\"item_ContactListId\" name=\"item.ContactListId\" type=\"hidden\" value=\"\"></td><td><input class=\"text-box single-line\" id=\"item_Phone\" name=\"item.Phone\" type=\"text\" value=\"\"></td><td><input class=\"text-box single-line\" id=\"item_Email\" name=\"item.Email\" type=\"text\" value=\"\"></td><td><input class=\"text-box single-line\" id=\"item_Skype\" name=\"item.Skype\" type=\"text\" value=\"\"></td><td><input class=\"text-box single-line\" id=\"item_Other\" name=\"item.Other\" type=\"text\" value=\"\"></td></tr>");
+            $('input').on('input', function (e) {
+                $("input[name='JsonFile']").val(html2json());
+            });
+        });
+        $("input[name='JsonFile']").val(html2json());
+        $('input').on('input', function (e) {
+            $("input[name='JsonFile']").val(html2json());
+        });
+    });
+
+    function html2json() {
+        var json = '[';
+        var otArr = [];
+        var tbl2 = $('#ContactInfo tbody tr').each(function (i) {
+            x = $(this).children();
+            var itArr = [];
+            x.each(function () {
+                itArr.push('"' + $(this).find('input').attr("name")+'":"'+ $(this).find('input').val() + '"');
+            });
+            otArr.push('{' + itArr.join(',') + '}');
+        })
+        json += otArr.join(",") + ']'
+
+        return json;
+    }
+
+</script>
+
+<h4>Контактная информация</h4>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <table class="table" id="ContactInfo" name="ContactInfo">
+        <thead>
+            <tr>
+                <th hidden="hidden">@Html.DisplayNameFor(i => i.FirstOrDefault().Id)</th>
+                <th hidden="hidden">@Html.DisplayNameFor(i => i.FirstOrDefault().ContactListId)</th>
+                <th>@Html.DisplayNameFor(i => i.FirstOrDefault().Phone)</th>
+                <th>@Html.DisplayNameFor(i => i.FirstOrDefault().Email)</th>
+                <th>@Html.DisplayNameFor(i => i.FirstOrDefault().Skype)</th>
+                <th>@Html.DisplayNameFor(i => i.FirstOrDefault().Other)</th>
+            </tr>
+        </thead>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td hidden="hidden">@Html.HiddenFor(model => item.Id)</td>
+                <td hidden="hidden">@Html.HiddenFor(model => item.ContactListId)</td>
+                <td>@Html.EditorFor(model => item.Phone)</td>
+                <td>@Html.EditorFor(model => item.Email)</td>
+                <td>@Html.EditorFor(model => item.Skype)</td>
+                <td>@Html.EditorFor(model => item.Other)</td>
+            </tr>
+        }
+    </table>
+    <input id="JsonFile" name="JsonFile" type="text" hidden="hidden"/>
+}
+
+<input id="AddtableData" value="Добавить контактную информацию" type="button" class="ui-button ui-widget ui-state-default ui - corner - all ui - button - text - only" />
