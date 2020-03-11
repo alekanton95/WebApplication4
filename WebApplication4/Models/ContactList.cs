@@ -5,6 +5,7 @@ namespace WebApplication4.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using System.Web.Mvc;
 
     [Table("ContactList")]
     public partial class ContactList
@@ -41,6 +42,7 @@ namespace WebApplication4.Models
         public string Position { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        //[UIHint("Collection")]
         public virtual ICollection<ContactInfo> ContactInfoes { get; set; }
     }
 }

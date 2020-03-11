@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using WebApplication4.Models;
 using Newtonsoft.Json;
 using WebApplication4;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebApplication4.Controllers
 {
@@ -49,17 +50,24 @@ namespace WebApplication4.Controllers
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,LastName,FirstName,MiddleName,Organization,Position")] ContactList contactList)
+        public ActionResult Create(/*[Bind(Include = "Id,LastName,FirstName,MiddleName,Organization,Position")]*/ ContactList contactList, IEnumerable<ContactInfo> contactInfo)
         {
+            SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList, db);
+            var validAll = saveDataFromContactInfo.AllValid(Request.Params["JsonFile"].Replace("item.", ""));
+            if (!string.IsNullOrWhiteSpace(validAll))
+            {
+                ModelState.AddModelError("", validAll);
+                contactList = saveDataFromContactInfo.GetContactList(Request.Params["JsonFile"].Replace("item.", ""));
+                return View(contactList);
+            }
             if (ModelState.IsValid)
             {
                 db.ContactLists.Add(contactList);
                 db.SaveChanges();
-                SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList, db);
                 saveDataFromContactInfo.SaveData(Request.Params["JsonFile"].Replace("item.", ""));
                 return RedirectToAction("Index");
             }
-
+            contactList = saveDataFromContactInfo.GetContactList(Request.Params["JsonFile"].Replace("item.", ""));
             return View(contactList);
         }
 
@@ -81,7 +89,7 @@ namespace WebApplication4.Controllers
                 Content = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }),
                 ContentType = "application/json"
             };*/
-            var json1 = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            //var json1 = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
             return View(contactList);
         }
 
@@ -92,14 +100,22 @@ namespace WebApplication4.Controllers
         //[ValidateAntiForgeryToken]
         public ActionResult Edit(/*[Bind(Include = "Id,LastName,FirstName,MiddleName,Organization,Position, ContactInfoes")]*/ ContactList contactList, /*[Bind(Include = "Id,ContactList,ContactListId,Phone,Email,Skype,Other ")]*/IEnumerable<ContactInfo> contactInfo)
         {
+            SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList, db);
+            var validAll = saveDataFromContactInfo.AllValid(Request.Params["JsonFile"].Replace("item.", ""));
+            if (!string.IsNullOrWhiteSpace(validAll))
+            {
+                ModelState.AddModelError("", validAll);
+                contactList = saveDataFromContactInfo.GetContactList(Request.Params["JsonFile"].Replace("item.", ""));
+                return View(contactList);
+            }
             if (ModelState.IsValid)
             {
                 db.Entry(contactList).State = EntityState.Modified;
                 db.SaveChanges();
-                SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList,db);
-                saveDataFromContactInfo.SaveData(Request.Params["JsonFile"].Replace("item.",""));
+                saveDataFromContactInfo.SaveData(Request.Params["JsonFile"].Replace("item.", ""));
                 return RedirectToAction("Index");
             }
+            contactList = saveDataFromContactInfo.GetContactList(Request.Params["JsonFile"].Replace("item.", ""));
             return View(contactList);
         }
 
@@ -120,7 +136,7 @@ namespace WebApplication4.Controllers
 
         // POST: ContactLists/Delete/5
         [HttpPost, ActionName("Delete")]
-       // [ValidateAntiForgeryToken]
+        // [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             ContactList contactList = db.ContactLists.Find(id);
@@ -162,16 +178,5 @@ namespace WebApplication4.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult ContactInfoCreateAndEdit(IEnumerable<ContactInfo> contactInfo)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(contactInfo).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(contactInfo);
-        }
     }
 }
