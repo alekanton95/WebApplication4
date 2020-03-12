@@ -26,8 +26,8 @@ namespace WebApplication4
         {
             if (!string.IsNullOrWhiteSpace(jsonFile))
             {
-                var json = SetContactInfoes(jsonFile);
-                foreach (var item in json)
+                IEnumerable<ContactInfo> json = SetContactInfoes(jsonFile);
+                foreach (var item in json.OrderByDescending(i => i.ContactListId))
                 {
                     if (item.ContactListId == null)
                     {
@@ -38,21 +38,51 @@ namespace WebApplication4
                             db.ContactInfoes.Add(item);
                             //db.SaveChanges();
                             ContactList.ContactInfoes.Add(item);
+                            db.SaveChanges();
                         }
 
                     }
                     else
                     {
                         if (IsNull(item))
+                        {
+
                             db.Entry(item).State = EntityState.Modified;
+                            db.SaveChanges();
+                        }
+
 
                     }
 
                 }
+                Delete(json);
+            }
+        }
+
+        /// <summary>
+        /// Удаление связного элементов
+        /// </summary>
+        /// <param name="contactInfos"></param>
+        private void Delete(IEnumerable<ContactInfo> contactInfos)
+        {
+            List<int> oldContactinfo = new List<int>();
+            var AllContactInfo = db.ContactInfoes.Where(i => i.ContactListId == ContactList.Id).ToList();
+            AllContactInfo.ForEach(i => oldContactinfo.Add(i.Id));
+            foreach (var item in contactInfos)
+            {
+                oldContactinfo.Remove(item.Id);
+            }
+            foreach (var item in oldContactinfo)
+            {
+                var contactInfo1 = db.ContactInfoes.Where(c => c.Id == item).ToList();
+                foreach (var item1 in contactInfo1)
+                {
+                    db.Entry(item1).State = EntityState.Deleted;
+                    //db.ContactInfoes.Remove(item1);
+                }
+                //
                 db.SaveChanges();
             }
-
-
         }
 
         /// <summary>
@@ -67,6 +97,7 @@ namespace WebApplication4
             {
                 //var element = ContactList.ContactInfoes.Where(i => i.Id == contactInfo.Id).FirstOrDefault();
                 db.Entry(contactInfo).State = EntityState.Deleted;
+                db.SaveChanges();
                 return false;
             }
             else return true;
@@ -103,7 +134,7 @@ namespace WebApplication4
             {
                 foreach (var error in results)
                 {
-                    errorresult+= error.ErrorMessage;
+                    errorresult += error.ErrorMessage;
                 }
             }
             return errorresult;
@@ -122,7 +153,7 @@ namespace WebApplication4
             {
                 foreach (var error in results)
                 {
-                    errorresult += error.ErrorMessage;
+                    errorresult += error.ErrorMessage + '\n';
                 }
             }
             return errorresult;
@@ -173,5 +204,7 @@ namespace WebApplication4
         {
             return ValidateData() + '\n' + ValidateData(SetContactInfoes(jsonFile));
         }
+
+
     }
 }

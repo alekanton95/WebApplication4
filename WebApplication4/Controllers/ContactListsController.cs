@@ -83,13 +83,7 @@ namespace WebApplication4.Controllers
             {
                 return HttpNotFound();
             }
-            //ViewBag.ContactInfoes = contactList.ContactInfoes;
-            /*var json= new ContentResult
-            {
-                Content = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }),
-                ContentType = "application/json"
-            };*/
-            //var json1 = JsonConvert.SerializeObject(contactList, Formatting.None, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore });
+            
             return View(contactList);
         }
 
@@ -97,7 +91,7 @@ namespace WebApplication4.Controllers
         // Чтобы защититься от атак чрезмерной передачи данных, включите определенные свойства, для которых следует установить привязку. Дополнительные 
         // сведения см. в статье https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(/*[Bind(Include = "Id,LastName,FirstName,MiddleName,Organization,Position, ContactInfoes")]*/ ContactList contactList, /*[Bind(Include = "Id,ContactList,ContactListId,Phone,Email,Skype,Other ")]*/IEnumerable<ContactInfo> contactInfo)
         {
             SaveDataFromContactInfo saveDataFromContactInfo = new SaveDataFromContactInfo(contactList, db);
@@ -136,7 +130,7 @@ namespace WebApplication4.Controllers
 
         // POST: ContactLists/Delete/5
         [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
+         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             ContactList contactList = db.ContactLists.Find(id);

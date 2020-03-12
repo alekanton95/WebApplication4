@@ -17,15 +17,15 @@ namespace WebApplication4.Models
         [StringLength(50)]
         [Display(Name = "“елефон")]
         [DataType(DataType.PhoneNumber, ErrorMessage = "¬ведите корректный номер телефона")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "¬ведите корректный номер телефона")]
-        [Phone(ErrorMessage = "¬ведите корректный номер телефона")]
+        //[RegularExpression(@"/^([0-9]{0,11})?(\+[0-9]{1,3})?(\([0-9]{1,3})?(\)[0-9]{1})?([-0-9]{0,8})?([0-9]{0,1})?$/", ErrorMessage = "¬ведите корректный номер телефона")]
+        //[Phone(ErrorMessage = "¬ведите корректный номер телефона")]
         public string Phone { get; set; }
 
         [StringLength(50)]
         [Display(Name = "E-mail")]
         [DataType(DataType.EmailAddress, ErrorMessage = "¬ведите корректный e-mail")]
-        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,100}", ErrorMessage = "¬ведите корректный e-mail")]
-        [EmailAddress(ErrorMessage = "¬ведите корректный e-mail")]
+        //[RegularExpression(@"/^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/", ErrorMessage = "¬ведите корректный e-mail")]
+        //[EmailAddress(ErrorMessage = "¬ведите корректный e-mail")]
         public string Email { get; set; }
 
         [StringLength(50)]
