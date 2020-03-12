@@ -96,8 +96,11 @@ namespace WebApplication4
                 && string.IsNullOrWhiteSpace(contactInfo.Skype) && string.IsNullOrWhiteSpace(contactInfo.Other))
             {
                 //var element = ContactList.ContactInfoes.Where(i => i.Id == contactInfo.Id).FirstOrDefault();
-                db.Entry(contactInfo).State = EntityState.Deleted;
-                db.SaveChanges();
+                if (contactInfo.ContactListId == 0)
+                {
+                    db.Entry(contactInfo).State = EntityState.Deleted;
+                    db.SaveChanges();
+                }
                 return false;
             }
             else return true;

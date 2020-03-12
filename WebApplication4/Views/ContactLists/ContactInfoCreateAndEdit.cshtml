@@ -1,85 +1,81 @@
 ﻿@model IEnumerable<WebApplication4.Models.ContactInfo>
 
-
 <script src="~/Scripts/validation.js"></script>
-
 <h4>Контактная информация</h4>
-<form id="MyForm">
-    <table class="table" id="ContactInfo" name="ContactInfo">
-        <thead>
-            <tr>
-                <th hidden="hidden">@Html.DisplayNameFor(i => i.FirstOrDefault().Id)</th>
-                <th hidden="hidden">@Html.DisplayNameFor(i => i.FirstOrDefault().ContactListId)</th>
-                <th>
-                    <div>
-                        <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Phone)</div>
-                    </div>
-                </th>
-                <th>
-                    <div>
-                        <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Email)</div>
-                    </div>
-                </th>
-                <th>
-                    <div>
-                        <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Skype)</div>
-                    </div>
-                </th>
-                <th>
-                    <div>
-                        <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Other)</div>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            @if (Model != null)
+<table class="table" id="ContactInfo" name="ContactInfo">
+    <thead>
+        <tr>
+            <th hidden="hidden">@Html.DisplayNameFor(i => i.FirstOrDefault().Id)</th>
+            <th hidden="hidden">@Html.DisplayNameFor(i => i.FirstOrDefault().ContactListId)</th>
+            <th>
+                <div>
+                    <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Phone)</div>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Email)</div>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Skype)</div>
+                </div>
+            </th>
+            <th>
+                <div>
+                    <div class="col-md-10">@Html.DisplayNameFor(i => i.FirstOrDefault().Other)</div>
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
             {
                 foreach (var item in Model)
                 {
-                    <tr>
-                        <td hidden="hidden">@Html.HiddenFor(model => item.Id)</td>
-                        <td hidden="hidden">@Html.HiddenFor(model => item.ContactListId)</td>
-                        <td>
-                            <div class="form-group">
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => item.Phone, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => item.Phone, "", new { @class = "text-danger" })
-                                </div>
+                <tr>
+                    <td hidden="hidden">@Html.HiddenFor(model => item.Id)</td>
+                    <td hidden="hidden">@Html.HiddenFor(model => item.ContactListId)</td>
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => item.Phone, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="field-validation-valid text-danger"></span>
+                                @*@Html.ValidationMessageFor(model => item.Phone, "", new { @class = "text-danger" })*@
                             </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => item.Email, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => item.Email, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => item.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                <span class="field-validation-valid text-danger"></span>
+                                @*@Html.ValidationMessageFor(model => item.Email, "", new { @class = "text-danger" })*@
                             </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => item.Skype, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => item.Skype, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => item.Skype, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => item.Skype, "", new { @class = "text-danger" })
                             </div>
-                        </td>
-                        <td>
-                            <div class="form-group">
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => item.Other, new { htmlAttributes = new { @class = "form-control" } })
-                                    @Html.ValidationMessageFor(model => item.Other, "", new { @class = "text-danger" })
-                                </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="form-group">
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => item.Other, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => item.Other, "", new { @class = "text-danger" })
                             </div>
-                        </td>
-                        <td><a href="#" class="row-remove">Удалить</a></td>
-                    </tr>
-                }
+                        </div>
+                    </td>
+                    <td><a href="#" class="row-remove">Удалить</a></td>
+                </tr>
             }
-        </tbody>
-
-    </table>
-</form>
+        }
+    </tbody>
+</table>
 <input id="JsonFile" name="JsonFile" type="text" hidden="hidden" />
-
 <input id="AddtableData" value="Добавить контактную информацию" type="button" class="ui-button ui-widget ui-state-default ui - corner - all ui - button - text - only" />
