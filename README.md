@@ -2,7 +2,7 @@
 
 В приложении настроено Code First посредством EntityFramework
 
-В Web.config можно подключить базу данных или файл Microsoft SQL Server 
+В Web.config нужно подключить базу данных или файл Microsoft SQL Server 
 
 
 
